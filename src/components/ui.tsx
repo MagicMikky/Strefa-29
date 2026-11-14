@@ -90,7 +90,6 @@ export function PageHero({
 }) {
   return (
     <section className="page-hero">
-      <div className="page-hero__grid" aria-hidden="true" />
       <Container className="page-hero__inner">
         <div className="page-hero__copy">
           <Eyebrow light>{eyebrow}</Eyebrow>
@@ -98,7 +97,6 @@ export function PageHero({
           <p>{lead}</p>
           {children ? <div className="button-row">{children}</div> : null}
         </div>
-        <TacticalMark compact />
       </Container>
     </section>
   );
@@ -107,7 +105,14 @@ export function PageHero({
 export function TacticalMark({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`tactical-mark${compact ? " tactical-mark--compact" : ""}`} aria-hidden="true">
-      <Image src="/logo.png" alt="" width={1254} height={1254} />
+      <Image
+        src="/logo.png"
+        alt=""
+        width={900}
+        height={900}
+        sizes={compact ? "(max-width: 768px) 45vw, 450px" : "(max-width: 768px) 35vw, 410px"}
+        priority
+      />
     </div>
   );
 }
@@ -116,10 +121,14 @@ export function CtaBand({
   eyebrow = "Gotowi wejść do gry?",
   title = "Najpierw sprawdźmy, co pasuje do Twojej ekipy.",
   body = "Podaj preferowany termin i liczbę graczy. To zapytanie — obsługa potwierdzi dostępność i cenę przed ustaleniem wizyty.",
+  phoneHref,
+  phoneLabel,
 }: {
   eyebrow?: string;
   title?: string;
   body?: string;
+  phoneHref?: string;
+  phoneLabel?: string;
 }) {
   return (
     <section className="cta-band">
@@ -131,7 +140,14 @@ export function CtaBand({
         </div>
         <div className="button-row">
           <ButtonLink href="/zapytaj-o-termin" variant="light">Zapytaj o wolny termin</ButtonLink>
-          <ButtonLink href="/kontakt" variant="ghost" icon="phone">Kontakt</ButtonLink>
+          {phoneHref && phoneLabel ? (
+            <a className="button button--ghost" href={phoneHref}>
+              <span>{phoneLabel}</span>
+              <Icon name="phone" width={19} height={19} />
+            </a>
+          ) : (
+            <ButtonLink href="/kontakt" variant="ghost" icon="phone">Kontakt</ButtonLink>
+          )}
         </div>
       </Container>
     </section>
