@@ -1,0 +1,19 @@
+{
+  "plugins": {
+    "playwright": {
+      "enabled": true
+    },
+    "supabase": {
+      "enabled": false
+    },
+    "impeccable": {
+      "enabled": true
+    },
+    "vercel": {
+      "enabled": false
+    },
+    "superdesign": {
+      "enabled": true
+    }
+  }
+}
