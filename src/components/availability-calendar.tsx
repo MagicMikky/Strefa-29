@@ -90,10 +90,14 @@ export function AvailabilityCalendar({
         </div>
         <span className="availability__intro-mark" aria-hidden="true">29</span>
       </div>
-      {capacityKnown ? null : <p className="availability__notice" role="alert">Nie udało się odczytać zajętych terminów. Dostępność jest chwilowo nieznana.</p>}
-      {schedule.weekdays.length === 0 ? (
-        <p className="availability__notice">Dni tygodnia nie zostały jeszcze opublikowane, więc kalendarz nie oznacza ich jako otwarte.</p>
-      ) : null}
+      <aside className="availability__notices" aria-label="Ważne informacje o dostępności">
+        <strong>Zanim wybierzesz dzień</strong>
+        <ul>
+          <li>Wybrany termin otwiera zgłoszenie. Rezerwację potwierdza pracownik po kontakcie z Tobą.</li>
+          {!capacityKnown ? <li role="alert">Nie udało się odczytać zajętych terminów. Dostępność jest chwilowo nieznana.</li> : null}
+          {schedule.weekdays.length === 0 ? <li>Dni tygodnia nie zostały jeszcze opublikowane.</li> : null}
+        </ul>
+      </aside>
       <div className="availability__filters" aria-label="Ustawienia grupy">
         <label>
           <span>Liczba graczy w grupie</span>
@@ -121,11 +125,11 @@ export function AvailabilityCalendar({
         </div>
       </div>
       <div className="availability__legend">
-        <span><i className="is-open" /> Dostępny</span>
-        <span><i className="is-limited" /> Mało miejsc</span>
-        <span><i className="is-unavailable" /> Niedostępny</span>
-        <span><i className="is-undecided" /> Nieustalony</span>
-        <span><i className="is-confirmed" /> Potwierdzony slot</span>
+        <span><i className="is-open" aria-hidden="true" /> Dostępny</span>
+        <span><i className="is-limited" aria-hidden="true" /> Mało miejsc</span>
+        <span><i className="is-unavailable" aria-hidden="true" /> Niedostępny</span>
+        <span><i className="is-undecided" aria-hidden="true" /> Nieustalony</span>
+        <span><i className="is-confirmed" aria-hidden="true" /> Potwierdzony slot</span>
       </div>
       {view === "month" ? (
         <>
@@ -302,6 +306,7 @@ function DayButton({
   return (
     <button className={`${toneClass(tone)}${date === today ? " is-today" : ""}`} disabled={past} type="button" onClick={() => onSelect(date)}>
       <b>{dayNumber}</b>
+      <span className="availability__status-dot" aria-hidden="true" />
       <small>{capacityKnown ? shortLabel(tone) : "Nieznany"}</small>
       {capacityKnown && day.confirmedSlots > 0 ? <span className="availability__confirmed-count" aria-hidden="true"><span>{day.confirmedSlots}</span><span className="availability__confirmed-word"> {day.confirmedSlots === 1 ? "zajęty" : "zajęte"}</span></span> : null}
       <span className="sr-only">{formatDate(date)}, {capacityKnown ? day.statusLabel : "Dostępność nieznana"}{capacityKnown && day.confirmedSlots > 0 ? `, ${day.confirmedSlots} potwierdzonych slotów` : ""}</span>

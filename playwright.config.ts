@@ -16,8 +16,8 @@ export default defineConfig({
   },
   webServer: {
     command: production
-      ? `npx next start --hostname 127.0.0.1 --port ${port}`
-      : `npx next dev --hostname 127.0.0.1 --port ${port}`,
+      ? `npm run start -- --hostname 127.0.0.1 --port ${port}`
+      : `npm run dev -- --hostname 127.0.0.1 --port ${port}`,
     url: baseURL,
     reuseExistingServer: !production,
     timeout: 180_000,

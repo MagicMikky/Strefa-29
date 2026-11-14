@@ -9,6 +9,7 @@ import { getPublicBusiness } from "@/lib/business/public";
 import { getPublishedSiteCopy } from "@/lib/content/public";
 import { searchRobots } from "@/lib/seo";
 import "./globals.css";
+import "./redesign.css";
 
 const display = Barlow_Condensed({
   subsets: ["latin", "latin-ext"],
@@ -84,7 +85,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   };
 
   return (
-    <html lang="pl" className={`${display.variable} ${sans.variable}`}>
+    <html lang="pl" className={`${display.variable} ${sans.variable}`} data-scroll-behavior="smooth">
       <body>
         <a className="skip-link" href="#main-content">Przejdź do treści</a>
         <SiteHeader addressLabel={`${business.profile.street}, ${business.profile.city}`} />

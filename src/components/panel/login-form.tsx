@@ -36,8 +36,8 @@ export function LoginForm({ disabled }: { disabled: boolean }) {
   }
 
   return (
-    <form className="grid max-w-md gap-4" onSubmit={onSubmit}>
-      <label className="grid gap-2 text-sm font-semibold" htmlFor="staff-login">
+    <form className="panel-login-form" onSubmit={onSubmit}>
+      <label htmlFor="staff-login">
         Login
         <input
           id="staff-login"
@@ -46,10 +46,9 @@ export function LoginForm({ disabled }: { disabled: boolean }) {
           autoComplete="username"
           required
           disabled={disabled}
-          className="rounded-xl border border-black/15 bg-white px-3 py-3"
         />
       </label>
-      <label className="grid gap-2 text-sm font-semibold" htmlFor="staff-password">
+      <label htmlFor="staff-password">
         Hasło
         <input
           id="staff-password"
@@ -58,16 +57,14 @@ export function LoginForm({ disabled }: { disabled: boolean }) {
           autoComplete="current-password"
           required
           disabled={disabled}
-          className="rounded-xl border border-black/15 bg-white px-3 py-3"
         />
       </label>
       {error ? (
-        <p role="alert" className="text-sm font-medium text-red-800">
+        <p role="alert" className="panel-login-form__error">
           {error}
         </p>
       ) : null}
       <button
-        className="rounded-full bg-[var(--forest)] px-5 py-3 font-semibold text-white disabled:opacity-50"
         type="submit"
         disabled={disabled || pending}
       >

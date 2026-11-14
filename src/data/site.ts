@@ -49,6 +49,7 @@ export const mainNavigation: NavigationItem[] = [
   { href: "/cennik", label: "Cennik" },
   { href: "/galeria", label: "Galeria" },
   { href: "/dla-kogo", label: "Dla kogo" },
+  { href: "/rezerwacja", label: "Dostępność" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 

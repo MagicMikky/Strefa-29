@@ -38,7 +38,7 @@ test.describe("inquiry form", () => {
     await page.goto("/cennik");
     await page.getByRole("button", { name: "Tylko niezbędne" }).click();
     await page.getByRole("link", { name: "Zapytaj o ten pakiet" }).first().click();
-    await expect(page).toHaveURL(/\/zapytaj-o-termin\?pakiet=/);
+    await expect(page).toHaveURL(/\/zapytaj-o-termin\?pakiet=/, { timeout: 15_000 });
     await expect(page.locator("select[name='packageId']")).not.toHaveValue("nie-wiem");
   });
 

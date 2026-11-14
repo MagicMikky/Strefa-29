@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
+import { Logo } from "@/components/logo";
 import { LoginForm } from "@/components/panel/login-form";
-import { Container } from "@/components/ui";
 import { isAuthConfigured } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -27,24 +27,28 @@ export default async function LoginPage({
   const notice = params.error ? errors[params.error] : undefined;
 
   return (
-    <section className="section section--paper">
-      <Container>
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--forest)]">
-          Paintball Strefa 29
-        </p>
-        <h1 className="mt-2 text-4xl font-black tracking-tight">Logowanie pracownika</h1>
-        <p className="mt-3 max-w-xl text-[var(--muted)]">
-          Dostęp mają tylko konta utworzone przez właściciela. Publiczna rejestracja jest wyłączona.
-        </p>
-        {notice || !configured ? (
-          <p className="mt-4 max-w-xl rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-950" role="status">
-            {notice ?? "Panel nie jest jeszcze skonfigurowany. Brakuje bazy albo sekretu sesji."}
+    <section className="panel-login">
+      <div className="panel-login__visual" aria-hidden="true">
+        <Logo />
+        <span>STREFA OPERACYJNA // 29</span>
+      </div>
+      <div className="panel-login__surface">
+        <div className="panel-login__card">
+          <p className="panel-login__eyebrow">Paintball Strefa 29</p>
+          <h1>Logowanie pracownika</h1>
+          <p className="panel-login__lead">
+            Dostęp mają tylko konta utworzone przez właściciela. Publiczna rejestracja jest wyłączona.
           </p>
-        ) : null}
-        <div className="mt-8">
-          <LoginForm disabled={!configured} />
+          {notice || !configured ? (
+            <p className="panel-login__notice" role="status">
+              {notice ?? "Panel nie jest jeszcze skonfigurowany. Brakuje bazy albo sekretu sesji."}
+            </p>
+          ) : null}
+          <div className="panel-login__form-wrap">
+            <LoginForm disabled={!configured} />
+          </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

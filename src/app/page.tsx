@@ -69,7 +69,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="section section--sand">
+      <section className="section section--sand home-gallery-section">
         <Container>
           <div className="heading-row">
             <SectionHeading
@@ -98,7 +98,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="section section--paper">
+      <section className="section section--paper home-terrain-section">
         <Container>
           <div className="heading-row">
             <SectionHeading
@@ -142,7 +142,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="section section--cream">
+      <section className="section section--cream home-packages-section">
         <Container>
           <SectionHeading
             eyebrow="Wybierz poziom wejścia"
@@ -157,7 +157,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="section section--paper">
+      <section className="section section--paper home-audiences-section">
         <Container>
           <SectionHeading
             eyebrow="Jeden teren, różne okazje"
@@ -176,7 +176,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="section section--sand">
+      <section className="section section--sand home-faq-section">
         <Container className="faq-preview">
           <div>
             <SectionHeading
