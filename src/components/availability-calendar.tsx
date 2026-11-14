@@ -94,7 +94,7 @@ export function AvailabilityCalendar({
         <strong>Zanim wybierzesz dzień</strong>
         <ul>
           <li>Wybrany termin otwiera zgłoszenie. Rezerwację potwierdza pracownik po kontakcie z Tobą.</li>
-          {!capacityKnown ? <li role="alert">Nie udało się odczytać zajętych terminów. Dostępność jest chwilowo nieznana.</li> : null}
+          {!capacityKnown ? <li><span role="alert">Nie udało się odczytać zajętych terminów. Dostępność jest chwilowo nieznana.</span></li> : null}
           {schedule.weekdays.length === 0 ? <li>Dni tygodnia nie zostały jeszcze opublikowane.</li> : null}
         </ul>
       </aside>

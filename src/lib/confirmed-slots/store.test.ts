@@ -13,6 +13,12 @@ const settings = fallbackBusiness().settings;
 const schedule = { weekdays: ["sb" as const], blocks: [] };
 const now = new Date("2026-11-08T10:00:00.000Z");
 
+function futureSaturday(daysAhead: number): string {
+  const date = new Date(Date.now() + daysAhead * 86_400_000);
+  date.setUTCDate(date.getUTCDate() + (6 - date.getUTCDay() + 7) % 7);
+  return date.toISOString().slice(0, 10);
+}
+
 describe("confirmed visits", () => {
   it("requires a future configured slot and respects explicit closures", () => {
     expect(canConfirmSlot("2026-11-14", "10:00", settings, schedule, now)).toBe(true);
@@ -30,7 +36,7 @@ describe.skipIf(!enabled)("confirmed visits on PostgreSQL", () => {
   const db = new PrismaClient();
   const actorId = randomUUID();
   const inquiryIds = [randomUUID(), randomUUID(), randomUUID()];
-  const date = "2027-01-02";
+  const date = futureSaturday(366);
   const slot = "12:00";
   const holdKey = `calendar-race-${randomUUID()}`;
   const phoneIds: string[] = [];
@@ -64,7 +70,7 @@ describe.skipIf(!enabled)("confirmed visits on PostgreSQL", () => {
   });
 
   it("does not let a temporary hold and a confirmation occupy the same slot", async () => {
-    const raceDate = "2027-01-09";
+    const raceDate = futureSaturday(373);
     const raceSlot = "15:00";
     const raceNow = new Date();
     const inquiryId = inquiryIds[2];
@@ -81,7 +87,7 @@ describe.skipIf(!enabled)("confirmed visits on PostgreSQL", () => {
     expect([confirmation.ok, hold.ok].filter(Boolean)).toHaveLength(1);
   });
   it("serializes phone entries, enforces fifty seats, and audits edits and cancellation", async () => {
-    const phoneDate = "2027-01-16";
+    const phoneDate = futureSaturday(380);
     const base = { date: phoneDate, slot: "18:00", privateSlot: false, contactName: "Test telefon", contactPhone: "577203783", notes: "", actorId, now: new Date() };
     const first = await Promise.all([
       createPhoneBooking(db, { ...base, players: 30 }, settings, schedule),

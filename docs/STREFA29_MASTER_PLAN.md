@@ -1,10 +1,11 @@
 # PAINTBALL STREFA 29 — JEDYNY PLAN NADRZĘDNY PROJEKTU
 
-> **Aktualizacja decyzji 2026-11-13:** Parametry 8/2–4/32, starty 08:00/11:00/14:00 i tydzień poniedziałek–piątek opisane dalej są historycznym stanem tej rewizji. Obowiązują nowe ustalenia z `STREFA29_DECYZJE_DO_USTALENIA.md`: grupy 8–50 osób, 50 osób na slot, 10:00/12:00/15:00/18:00 przez siedem dni, także święta; domyślna wyłączność i opcjonalna wspólna gra bez dopłaty. Klient nadal wysyła zapytanie, pracownik może dodać rezerwację telefoniczną w panelu. Zadatek 500 zł i ognisko/grill po 200 zł są rozliczane poza stroną. Checkout i płatności online pozostają wyłączone.
+> **Aktualny stan:** Zatwierdzone zasady są w `STREFA29_DECYZJE_DO_USTALENIA.md`: grupy 8–50 osób, 50 osób na slot, 10:00/12:00/15:00/18:00 przez siedem dni, także święta; domyślna wyłączność i opcjonalna wspólna gra bez dopłaty. Klient nadal wysyła zapytanie, pracownik potwierdza wizytę lub dodaje wpis telefoniczny w panelu. Zadatek 500 zł i ognisko/grill po 200 zł są rozliczane poza stroną. Checkout i płatności online pozostają wyłączone. Datowane ustalenia dotyczące starej gałęzi `strefa-57` niżej są materiałem historycznym.
 
 **Wersja:** 2026-11-06 / Consolidation v2 — Sprint 0  
-**Repozytorium:** https://github.com/MagicMikky/strefa-57  
-**Aktualna rewizja `main`:** `14e082d6b09e34daa186526b204be903406e82dd` (2026-11-06, 23:24 +0100)  
+**Repozytorium bieżące:** https://github.com/MagicMikky/Strefa-29
+
+**Historyczna rewizja `strefa-57/main` z audytu:** `14e082d6b09e34daa186526b204be903406e82dd` (2026-11-06, 23:24 +0100)
 **Poprzednia rewizja audytu:** `853fa8ee45d34f05014be843736bf13357193f0c` (merge PR #36, 22:09 UTC). CI tej rewizji jest już **success**, nie „w toku”.  
 **Stan źródeł:** sprawdzono 31 plików `docs/`, `strona1_0.md`, `strona2_0.md`, `PLAN_BUDOWY_STRONY_STREFA_29.md`, `README.md`, `AGENTS.md`, aktualny schemat Prisma, główne moduły i CI.  
 **Charakter:** specyfikacja produktu, inwentaryzacja stanu faktycznego i plan dalszego rozwoju. **Nie jest dowodem produkcyjnego wdrożenia ani pentestem.**
@@ -25,14 +26,14 @@
 | Galeria pozioma Coverflow, kategorie, lightbox | **Zaimplementowane** | `src/components/gallery-coverflow.tsx`; publicznie bazowo 3 kadry |
 | Pracownicy, logowanie e-mail lub login, role i skrzynka zgłoszeń | **Zaimplementowane technicznie** | `src/lib/auth-factory.ts`, `src/app/api/staff/sign-in/route.ts`, `/panel/**`; **MFA brak** |
 | PostgreSQL + Prisma + zapis zgłoszeń | **Zaimplementowane technicznie** | `prisma/schema.prisma`; CI wykonuje migracje |
-| Panel właściciela: firma, kontakt, limity 8/2–4/32 | **Zaimplementowane** | `/panel/firma`, `BusinessProfile`, `BusinessContact`, `BusinessSettings` |
+| Panel właściciela: firma, kontakt, limity 8–50/50 | **Zaimplementowane** | `/panel/firma`, `BusinessProfile`, `BusinessContact`, `BusinessSettings` |
 | CMS opisów, istniejących pakietów, FAQ i SEO części stron | **Częściowo** | `/panel/tresci`, `SiteContent`; nie jest elastycznym page builderem |
 | Panel galerii: pliki, ukrywanie, okładka, opisy, kategorie | **Częściowo** | `/panel/galeria`, `GalleryCatalog`; obecny storage **na dysku procesu** |
 | Panel harmonogramu: dni tygodnia, blokady dnia i godziny | **Zaimplementowane podstawy** | `/panel/harmonogram`, `ScheduleCatalog`; nie ma pełnego grafiku personelu/zasobów |
 | Publiczna dostępność: miesiąc/tydzień/dzień, szczegóły slotów | **Zaimplementowany podgląd** | `/rezerwacja`, `AvailabilityCalendar`; terminy **nie są sprzedawane** |
 | Limit pojemności i anonimowe holdy | **Częściowy fundament** | `CapacityHold`, `src/lib/holds/**`; brak zatwierdzonego czasu hold i checkoutu |
 | Podgląd dostępności i historii zmian w panelu | **Zaimplementowany podstawowy** | `/panel/dostepnosc`, `/panel/historia`; historia bez diff/restore |
-| Prawdziwe rezerwacje, zamówienia i zadatki | **Brak** | Brak modeli `Booking`, `PaymentAttempt`, `Refund`, `TermsAcceptance` |
+| Potwierdzenia wizyt i wpisy telefoniczne | **Zaimplementowane** | `ConfirmedSlot` i `/panel/rezerwacje`; bez zamówień, płatności i zwrotów online |
 | Konta klientów / drużyny / ranking / liga | **Brak — roadmapa** | Wersje 2.1, 2.2, 2.3, 3.0 |
 | Publiczny sklep, kody rabatowe, vouchery, SMS | **Nie zatwierdzono zakresu** | Nie domyślać się priorytetu |
 
@@ -111,11 +112,12 @@
 | `/panel/zgloszenia`, `/panel/zgloszenia/[id]` | Lista, filtrowanie, szczegóły, statusy, przydzielenie, notatki, historia | Weryfikacja realnej poczty, retencja, eksport zgodny z RODO i SLA |
 | `/panel/pracownicy` | Owner: konta, role, login i blokowanie | Zaproszenia, reset hasła, MFA i recovery; dokładna macierz uprawnień |
 | `/panel/ustawienia` | Podstawowe ustawienia i hasło | 2FA, preferencje konta, konfiguracja profilu |
-| `/panel/firma`, `/panel/firma/podglad` | Dane firmy, kontakt, lokalizacja, parametry 8/2–4/32, draft/published, podgląd | Zatwierdzone wartości, historia zmian diff, konflikt edycji, spójny fallback |
+| `/panel/firma`, `/panel/firma/podglad` | Dane firmy, kontakt, lokalizacja, parametry 8–50/50, draft/published, podgląd | Zatwierdzone wartości, historia zmian diff, konflikt edycji, spójny fallback |
 | `/panel/tresci`, `/panel/tresci/podglad` | Treści FAQ, istniejących atrakcji/pakietów, SEO części stron | Dodawanie/usuwanie i kolejność pakietów, sekcji i dodatków, pełna strona/SEO |
 | `/panel/galeria` | Upload JPG/PNG/WebP, podpis, alt, widoczność, okładka, 3 kategorie, publikacja | Storage obiektowy, swobodne kategorie, przenoszenie kolejności, kadrowanie, zgody, retencja |
 | `/panel/harmonogram` | Publikacja dni tygodnia, blokada dnia/startu z powodem | Sezonowość, godziny i długość per data, zasoby, sprzęt/obsada, konflikty z rezerwacjami |
-| `/panel/dostepnosc` | Ten sam kalendarz co publiczny, statusy i anonimowe holdy | Prawdziwe rezerwacje ręczne, operacyjne zarządzanie, kalendarz z rozliczeniami |
+| `/panel/dostepnosc` | Ten sam kalendarz co publiczny, statusy, anonimowe holdy i potwierdzone wizyty | Rozliczenia i pełne operacyjne zarządzanie kalendarzem |
+| `/panel/rezerwacje` | Wpisy telefoniczne, ich zmiana, anulowanie i historia | Rozliczenia poza stroną |
 | `/panel/historia` | Ostatnie 40 zmian firmy/treści/galerii/harmonogramu z czasem i autorem | Diff, filtrowanie, paginacja, przywracanie wersji, niewymazywalny audyt |
 
 ### 3.3. Docelowy panel ownera — zasada „bez edycji kodu”
@@ -132,19 +134,17 @@ Właściciel ma edytować: dane prawne, telefon/e-mail/adres/dojazd, opisy każd
 
 | Parametr | Start | Status i sposób edycji |
 |---|---|---|
-| Drużyna | max **8 zawodników** | U-01, właściciel może zmienić |
-| Mecz | **2–4 drużyny** | U-02, owner zmienia; minimum operacyjne do ustalenia |
-| Slot | max **32 zawodników** | U-03 |
-| Sloty dzienne | **08:00 / 11:00 / 14:00** | U-04, harmonogram może się zmienić |
-| Czas gry | **120 min** | U-05 |
-| Bufor między grami | **60 min** | U-05 |
-| Pojemność nominalna dnia | **3×32=96** | Wartość wyliczana, nie stała |
-| Próg połowy | **48** przy 3 slotach | Dla zmienionego harmonogramu wyliczać dynamicznie |
-| Gra wspólna | Do **4 niezależnych drużyn** w slocie, w ramach limitów | U-06, fizyczne miejsca i limity drużyn to różne ograniczenia |
-| Slot prywatny | **Cały slot wyłączny**, nawet przy 8 osobach | U-07; cena do ustalenia |
+| Grupa | **8–50 osób** | U-13; mniejszych grup nie przyjmować |
+| Slot | max **50 osób** | U-03; sprzęt i obsada nadal do potwierdzenia |
+| Starty dzienne | **10:00 / 12:00 / 15:00 / 18:00** | U-04; siedem dni, także święta |
+| Czas slotu | do **120 min** | U-05; bez automatycznego bufora |
+| Pojemność nominalna dnia | **4×50=200** | Wartość wyliczana, nie stała |
+| Próg połowy | **100** przy 4 czynnych slotach | Dla zmienionego harmonogramu wyliczać dynamicznie |
+| Gra wspólna | Tylko za zgodą grup, łącznie do **50 osób** | U-06; bez dopłaty |
+| Slot prywatny | **Cały slot wyłączny**, nawet przy 8 osobach | U-07; domyślny tryb |
 | Blokada ownera | Cały dzień lub start slotu | U-08; uzasadnienie i audyt |
 
-Default: 08:00–10:00 / bufor 10:00–11:00; 11:00–13:00 / bufor 13:00–14:00; 14:00–16:00. W bazie harmonogram może na razie mieć pustą listę otwartych dni tygodnia — to **nie oznacza**, że firma jest otwarta codziennie. Właściciel powinien ją zatwierdzić i opublikować.
+Domyślnie dostępne są wszystkie dni i cztery starty. Właściciel może opublikować ręczne blokady dni i godzin. Migracja ustawień aktualizuje wcześniejszy harmonogram bez przesuwania potwierdzonych wizyt.
 
 ### 4.2. Wizualizacja kalendarza
 
@@ -155,9 +155,8 @@ Default: 08:00–10:00 / bufor 10:00–11:00; 11:00–13:00 / bufor 13:00–14:0
 - **Nieustalony (czwarty stan)**: nieopublikowany harmonogram lub niepotwierdzona zdolność do oceny. Nie udawać dostępności zielonym kolorem.
 - Po kliknięciu daty dialog pokazuje każdy slot, `freePhysicalSeats`, `bookableSeats`, informację o ograniczeniach i CTA; na mobile widok dzień/tydzień i klawiatura. Dostępność status + tekst, a nie sam kolor.
 - Przy wyłączeniu jednego slotu pojemność czynna spada; kolor liczony do czynnych slotów (rekomendacja z D-19, do potwierdzenia).
-- Jeśli są 4 drużyny po 4 graczy, 16 fizycznych miejsc pozostaje, lecz piąta drużyna **nie może** wejść: `bookableSeats=0`.
-- Slot prywatny zajmuje pełne 32 miejsca rozliczeniowe i blokuje dalsze grupy; istniejącej rezerwacji cudzej drużyny nie można samowolnie zastąpić prywatną.
-- Obecnie kalendarz operuje **anonimowymi holdami**, a nie potwierdzonymi rezerwacjami; kolory są **orientacyjne**. Niezatwierdzone sprzęt i obsada dodatkowo uniemożliwiają deklarowanie w pełni wiążącej dostępności.
+- Grupy wspólne mogą zająć łącznie najwyżej 50 miejsc. Slot prywatny blokuje kolejne grupy niezależnie od liczby uczestników; istniejącej rezerwacji nie można zastąpić prywatną.
+- Kalendarz uwzględnia potwierdzone wizyty i aktywne holdy, bez ujawniania danych klientów. Niezatwierdzone sprzęt i obsada nadal ograniczają wiążący charakter dostępności.
 
 ### 4.3. Aktualny silnik holdów — co istnieje, a co nie
 
@@ -311,8 +310,8 @@ Rejestracji klientów, lig, rankingu, drużyn użytkownika, płatnych voucherów
 
 ## 10. Rejestr decyzji — status na dzień audytu
 
-**Zatwierdzone U-01…U-10:** drużyna 8; mecz 2–4; 32/slot; start 08/11/14; 120 min gry i 60 min bufora; współdzielenie/prywatny slot; blokada dnia/slotu; trzy kolory; edycja danych biznesowych przez ownera.  
-**U-11 WSTĘPNE:** co do zasady brak zwrotu z powodu zwykłego pogorszenia pogody; **wymaga oceny prawnej, wyjątków dla zagrożeń i odwołania przez obiekt**.
+**Zatwierdzone U-01…U-17:** aktualne wartości, w tym 8–50 osób, 50/slot, cztery starty przez siedem dni, domyślna wyłączność, wpisy telefoniczne i zadatek poza stroną, są w `STREFA29_DECYZJE_DO_USTALENIA.md`.
+**U-11 WSTĘPNE:** kwestie pogody i ewentualnych zwrotów ustala się telefonicznie; finalne zasady wymagają zatwierdzenia prawnego.
 
 **36 decyzji D-01…D-36** zachowano w osobnym pliku tej paczki `STREFA29_DECYZJE_DO_USTALENIA.md` z datą i priorytetem. **Żadna niewprowadzona wartość nie jest „ustalona” tylko dlatego, że istnieje kolumna w bazie.**
 
@@ -414,6 +413,8 @@ Każdy PR powinien zawierać: cel i zakres, linki do wymagań/TODO, listę zmien
 ---
 
 ## 14. Ścieżki i źródła w GitHub
+
+Aktualny projekt: https://github.com/MagicMikky/Strefa-29. Poniższe odnośniki dokumentują historyczny audyt poprzedniego repozytorium `strefa-57`.
 
 - Kod: https://github.com/MagicMikky/strefa-57/tree/main
 - Dokumentacja: https://github.com/MagicMikky/strefa-57/tree/main/docs

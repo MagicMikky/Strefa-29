@@ -108,3 +108,9 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/strefa?schema=public
           HOLD_PG_TEST: "1"
+
+      - name: Test confirmed and phone bookings
+        run: npx vitest run src/lib/confirmed-slots/store.test.ts
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/strefa?schema=public
+          CONFIRMED_PG_TEST: "1"

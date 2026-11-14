@@ -1,8 +1,8 @@
 # Paintball Strefa 29 — instrukcje dla agenta
 
-To repozytorium zawiera stronę marketingową 1.0, panel 1.5A (logowanie pracowników i skrzynka zgłoszeń) oraz działający CMS właściciela 1.5B: firma, treści, galeria, harmonogram i historia publikacji. Kalendarz dostępności pokazuje opublikowane sloty i prowadzi do zapytania. Checkout jest wyłączony. Plan nadrzędny jest w `docs/STREFA29_MASTER_PLAN.md`, backlog w `docs/STREFA29_CURSOR_ROADMAP_TODO.md`, a niezatwierdzone wartości tylko w `docs/STREFA29_DECYZJE_DO_USTALENIA.md`.
+To repozytorium zawiera stronę marketingową 1.0, panel 1.5A, CMS właściciela 1.5B, kalendarz zapytań oraz potwierdzenia wizyt i wpisy telefoniczne w panelu. Klient wybiera termin i wysyła zgłoszenie; pracownik potwierdza wizytę. Płatności online są wyłączone. Aktualne decyzje są w `docs/STREFA29_DECYZJE_DO_USTALENIA.md`, plan w `docs/STREFA29_MASTER_PLAN.md`, a backlog w `docs/STREFA29_CURSOR_ROADMAP_TODO.md`.
 
-Nie cofaj logowania, skrzynki, CMS-a, galerii, harmonogramu ani kalendarza. Nie implementuj płatności, kont klientów, drużyn, rankingów ani ligi, dopóki właściciel nie wskaże konkretnej wersji i nie zatwierdzi decyzji handlowych. Nie wymyślaj cen, zadatku, dopłaty, zasad zwrotu, operatora płatności ani liczby zestawów.
+Nie cofaj logowania, skrzynki, CMS-a, galerii, harmonogramu, kalendarza ani wpisów telefonicznych. Zatwierdzone zasady: grupy 8–50 osób, 50 osób na slot, cztery starty (10:00, 12:00, 15:00, 18:00) przez siedem dni, domyślna wyłączność i opcjonalna gra wspólna. Zadatek 500 zł jest rozliczany poza stroną. Nie implementuj płatności online, kont klientów, drużyn, rankingów ani ligi bez odrębnego zlecenia. Nie wymyślaj pozostałych cen, zasad zwrotu, operatora płatności ani liczby zestawów.
 
 ## Zanim zmienisz kod
 
